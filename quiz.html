@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gensyn Quiz</title>
+  <style>
+    body { font-family: "Poppins", sans-serif; background:#0e1117; color:#f5f5f5; text-align:center; padding:1rem; }
+    h1 { color:#00ffa0; }
+    .quiz-container { max-width:600px; margin:auto; background:#1c1f26; border-radius:15px; padding:25px; box-shadow:0 0 25px rgba(0,255,160,0.25); }
+    .question { font-size:1.2rem; margin:1rem 0; }
+    .option { background:rgba(255,255,255,0.05); border:2px solid transparent; border-radius:10px; padding:10px; margin:5px 0; cursor:pointer; transition:0.3s; }
+    .option:hover { border:2px solid #00ffa0; }
+    .correct { background:rgba(0,255,160,0.2); border-color:#00ffa0; }
+    .wrong { background:rgba(255,92,92,0.2); border-color:#ff5c5c; }
+    button { background:#00ffa0; color:#000; border:none; padding:10px 20px; border-radius:10px; margin-top:15px; font-weight:bold; cursor:pointer; }
+    button:hover { background:#00cc80; transform:scale(1.05); }
+  </style>
+</head>
+<body>
+  <h1>Gensyn Quiz</h1>
+  <div class="quiz-container">
+    <div id="quiz"></div>
+    <div id="result"></div>
+    <button id="nextBtn" style="display:none;">Next ➡️</button>
+  </div>
+
+  <script>
+    const quizData = [
+      {q:"What is RL Swarm?",o:["Central server","Peer-to-peer RL system","Dataset","GPU miner"],a:1},
+      {q:"What is GenRL?",o:["AI game","RL backend for Gensyn","Crypto wallet","Miner"],a:1},
+      {q:"BlockAssist is?",o:["AI Minecraft assistant","Dataset","Miner","Plugin"],a:0},
+      {q:"Judge verifies?",o:["Training honesty","Web traffic","User count","Latency"],a:0},
+    ];
+
+    let current=0,score=0;
+    const quiz=document.getElementById('quiz');
+    const nextBtn=document.getElementById('nextBtn');
+    const result=document.getElementById('result');
+
+    function loadQuestion(){
+      const q=quizData[current];
+      quiz.innerHTML=`<div class='question'>${current+1}. ${q.q}</div>`;
+      q.o.forEach((opt,i)=>{
+        const div=document.createElement('div');
+        div.className='option';
+        div.textContent=opt;
+        div.onclick=()=>selectOption(i);
+        quiz.appendChild(div);
+      });
+      nextBtn.style.display='none';
+      result.textContent='';
+    }
+
+    function selectOption(i){
+      const q=quizData[current];
+      const options=document.querySelectorAll('.option');
+      options.forEach((opt,idx)=>{
+        opt.style.pointerEvents='none';
+        if(idx===q.a)opt.classList.add('correct');
+        if(idx===i&&i!==q.a)opt.classList.add('wrong');
+      });
+      if(i===q.a)score++;
+      nextBtn.style.display='block';
+    }
+
+    nextBtn.onclick=()=>{
+      current++;
+      if(current<quizData.length){loadQuestion();}
+      else{
+        localStorage.setItem('score',score);
+        localStorage.setItem('total',quizData.length);
+        window.location.href='result.html';
+      }
+    };
+    loadQuestion();
+  </script>
+</body>
+</html>
