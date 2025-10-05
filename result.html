@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Result</title>
+  <style>
+    body { background:#0e1117; color:#f5f5f5; font-family:"Poppins",sans-serif; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
+    h1 { color:#00ffa0; }
+    .score { font-size:1.5rem; margin:10px 0; }
+    .msg { color:#ccc; margin-bottom:20px; }
+    button { background:#00ffa0; color:#000; border:none; padding:10px 20px; border-radius:10px; font-weight:bold; cursor:pointer; }
+    button:hover { background:#00cc80; transform:scale(1.05); }
+  </style>
+</head>
+<body>
+  <h1>🎯 Your Results</h1>
+  <div class="score" id="score"></div>
+  <div class="msg" id="msg"></div>
+  <button onclick="window.location.href='index.html'">🏠 Home</button>
+
+  <script>
+    const s=localStorage.getItem('score');
+    const t=localStorage.getItem('total');
+    document.getElementById('score').textContent=`You scored ${s} / ${t}`;
+    const percent=(s/t)*100;
+    document.getElementById('msg').textContent=percent>=80?"🌟 Excellent!":"Keep learning 💡";
+  </script>
+</body>
+</html>
